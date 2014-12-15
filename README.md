@@ -11,6 +11,10 @@ The minimum similarity score is still being tested to determine what a good cuto
 
 All members of a group should be related to the document seeding the group, but may not have a strong similarity to other members of the group.  Grouping is symmetric, i.e. if Document1 is added to Document2's group, then Document2 will also be added to Document1's group.
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Planned improvements:
+
+Use the Jaccard similarity coefficient to measure similarity between groups, with the current similarity score of the sum of word weights as the norm of a set.  Should improve similarity rankings for documents with small unique word sets, and act as a better overall indicator of similarity.  Will need to determine an appropriate cut off similarity value for groups.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Historic Versions
