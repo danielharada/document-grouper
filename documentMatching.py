@@ -7,8 +7,7 @@ find other documents that have similar content.
 """
 import fileInteraction
 
-min_similarity = 10  # Minimum similarity score needed to count as match
-
+min_jaccard_coef = 0.025  #  Minimum Jaccard Similarity Coefficient to count as related
 
 def removeCommonWords(document_word_set):
     articles = ['a', 'an', 'the']
@@ -57,32 +56,37 @@ def generateWordCount(document_dict):
 def createGroups(document_dict, word_count):
     groups = {}
     for document in document_dict:
-        doc_name = document[60:]  #  Slice depends on file path
+        doc_name = document[60:]  #  Slice size depends on file path
         groups[doc_name] = []
         addDocumentsToGroup(groups, document, document_dict, word_count)
     printGroups(groups)
 
 def addDocumentsToGroup(groups, document_to_compare_to, document_dict, word_count):
     compare_to_word_set = document_dict[document_to_compare_to]
-    compare_to_name = document_to_compare_to[60:]  #  Slice depends on file path
+    compare_to_name = document_to_compare_to[60:]  #  Slice size depends on file path
     all_other_docs = [doc for doc in document_dict]
     all_other_docs.remove(document_to_compare_to)
-    #print('all_other_docs is:')
-    #print(all_other_docs)
+    
     for document in all_other_docs:
         comparee_word_set = document_dict[document]
-        comparee_name = document[60:]  #  Slice depends on file path.
-        #print('We are comparing {} to {}'.format(comparee_name, compare_to_name))
-        #print('The {} group currently consists of: '.format(compare_to_name))
-        #print(groups[compare_to_name])
-        if comparee_name not in groups[compare_to_name]:
-            sub_set = comparee_word_set & compare_to_word_set
-            similarity = 0
-            for word in sub_set:
-                similarity += 1/word_count[word]
-            print(similarity)  #for checking, remove this line
-            if similarity >=  min_similarity:
-                groups[compare_to_name].append(comparee_name)
+        comparee_name = document[60:]  #  Slice size depends on file path.
+        jaccard_coef = getJaccardCoefficient(compare_to_word_set, comparee_word_set, word_count)
+        print(jaccard_coef)
+        if jaccard_coef >= min_jaccard_coef:
+            groups[compare_to_name].append(comparee_name)
+
+def getJaccardCoefficient(word_set_1, word_set_2, word_count):
+    union = word_set_1 | word_set_2
+    intersection = word_set_1 & word_set_2
+    union_magnitude = getWeightedMagnitude(union, word_count)
+    intersection_magnitude = getWeightedMagnitude(intersection, word_count)
+    return intersection_magnitude/union_magnitude
+
+def getWeightedMagnitude(word_set, word_count):
+    magnitude = 0
+    for word in word_set:
+        magnitude += 1/word_count[word]
+    return magnitude
 
 def printGroups(groups):
     for group in groups:
