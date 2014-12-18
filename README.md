@@ -16,6 +16,8 @@ __*Planned improvements*__:
 
 Explore shingling to help check for multi-word phrases.  Current matching is based only on individual words, no capabality to check the context of that word.
 
+Explore Linkedin APIs.  Mentors/mentees have option to include a Linkedin profile address, will pull any available info from Linkedin to add to word_sets for matching.
+
 ---
 __*Historic Versions*__:
 
